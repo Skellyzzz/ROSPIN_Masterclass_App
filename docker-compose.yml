@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: divespot-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: divespot
+      POSTGRES_PASSWORD: divespot_dev
+      POSTGRES_DB: divespot
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
