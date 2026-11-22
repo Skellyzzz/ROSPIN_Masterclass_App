@@ -1,1 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap");
 @import "tailwindcss";
+
+@theme {
+    --font-display: "Sora", sans-serif;
+    --font-sans: "Source Sans 3", sans-serif;
+    --color-night: #061423;
+    --color-panel: #0c2236;
+    --color-sky: #1fa2ff;
+    --color-aqua: #2dd4e6;
+    --color-safe: #34d399;
+    --color-warn: #f5b942;
+    --color-danger: #f87171;
+}
+
+@layer base {
+    body {
+        @apply bg-night font-sans text-white antialiased;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-aqua);
+        outline-offset: 2px;
+    }
+}
+
+.hero-sea {
+    background-image:
+            radial-gradient(ellipse 60% 50% at 75% 25%, rgb(31 162 255 / 0.28), transparent 70%),
+            radial-gradient(ellipse 50% 50% at 15% 90%, rgb(45 212 230 / 0.16), transparent 70%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
