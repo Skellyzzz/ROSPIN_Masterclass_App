@@ -20,11 +20,11 @@ from osgeo import ogr, osr
 
 
 def _project_root():
-    """Folderul proiectului: variabila CLAVADO_ROOT, folderul proiectului QGIS deschis sau parintele lui scripts/."""
+    """Folderul proiectului: variabila DIVESPOT_ROOT, folderul proiectului QGIS deschis sau parintele lui scripts/."""
     import os as _os
     import sys as _sys
-    if _os.environ.get("CLAVADO_ROOT"):
-        return _os.environ["CLAVADO_ROOT"].replace("\\", "/")
+    if _os.environ.get("DIVESPOT_ROOT"):
+        return _os.environ["DIVESPOT_ROOT"].replace("\\", "/")
     if "qgis.core" in _sys.modules:
         from qgis.core import QgsProject
         home = QgsProject.instance().homePath()

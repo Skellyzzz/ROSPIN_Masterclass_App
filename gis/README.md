@@ -1,16 +1,16 @@
-# CLAVADO
+# Dive Spot Finder – GIS pipeline
 
 **Cliff-diving spot safety from Earth Observation & LiDAR.**
 
 Built for the **ROSPIN Satellite Data Processing Masterclass** (3rd edition).
 
-CLAVADO finds coastal cliffs you can jump from and rates each one: is the water deep enough, are there rocks at the
+Dive Spot Finder finds coastal cliffs you can jump from and rates each one: is the water deep enough, are there rocks at the
 entry, is there room for a run-up, where do you climb out, how often is the sea calm, and which months are best.
 Everything is built from free or research-licensed data, much of it from satellites.
 
 Test area: ~2 km of the east coast of Mallorca (Spain), 133 jump spots found and rated.
 
-> CLAVADO is a pre-selection tool, not a safety guarantee. Satellite-derived depth has an error of ~1–3 m and
+> Dive Spot Finder is a pre-selection tool, not a safety guarantee. Satellite-derived depth has an error of ~1–3 m and
 > boulders in deep or dark water are not visible. Always check the depth on site and never jump alone.
 
 ## What it does
@@ -86,13 +86,15 @@ PDAL algorithms in QGIS. Detailed notes on every product and method: [`outputs/R
 
 - **In this repository:** code, the QGIS project, the jump spots (`outputs/spots`), swim routes, waves, ICESat-2,
   OpenStreetMap and Sentinel-2 statistics, and the complete web app with its 3D tiles.
-- **[GitHub Release v1-data](https://github.com/gabiRoBt/CLAVADO/releases/tag/v1-data) (`CLAVADO-data-v1.zip`):** the two LiDAR `.laz` tiles and the larger rasters (LiDAR, orthophoto,
-  seabed, Sentinel-2). Unzip it into the repository folder.
+- **[GitHub Release gis-data-v1](https://github.com/Skellyzzz/ROSPIN_Masterclass_App/releases/tag/gis-data-v1) (`dive-spot-finder-gis-data-v1.zip`):** the two LiDAR `.laz` tiles and the larger rasters (LiDAR, orthophoto,
+  seabed, Sentinel-2). Unzip it into the `gis/` folder.
 - **Not included: PlanetScope imagery** and the products that keep its pixel values (`outputs/water`). The Planet
   Education & Research license does not allow publishing them. With your own Planet access, order PSScene
   `analytic_8b_sr_udm2` for the area and rerun step 1.
 
 ### Running
+
+All commands below run from the `gis/` folder.
 
 - QGIS 4.2 (with PDAL): open `cliff_dive_spot_finder.qgz` (relative paths) and run a script from the Python console:
   `exec(open(QgsProject.instance().homePath() + "/scripts/<script>.py", encoding="utf-8").read())`
@@ -101,7 +103,7 @@ PDAL algorithms in QGIS. Detailed notes on every product and method: [`outputs/R
 - Web app locally: `py -m http.server 8765 --directory outputs/webapp`, then open http://localhost:8765
 
 Scripts find the project folder automatically (the open QGIS project, or the parent of `scripts/`); set
-`CLAVADO_ROOT` to override it.
+`DIVESPOT_ROOT` to override it.
 
 ## Team
 

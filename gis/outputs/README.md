@@ -1,4 +1,4 @@
-# CLAVADO – produse din date (Mallorca, zona de test)
+# Dive Spot Finder – produse din date (Mallorca, zona de test)
 
 Zona de test: coasta de est a Mallorcăi (~39.50°N, 3.30°E), 1 × 2 km acoperiți de LiDAR, 4.1 × 3.5 km acoperiți de Planet.
 Proiect QGIS: `../cliff_dive_spot_finder.qgz`. Totul se poate regenera cu scripturile din `../scripts/`, rulate în ordinea de mai jos (din consola Python a QGIS):

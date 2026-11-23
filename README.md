@@ -8,6 +8,7 @@ A platform for discovering cliff jumping spots, monitoring marine water quality 
 ROSPIN_Masterclass_App/
 ├── frontend/            # React + TypeScript + Vite + Tailwind CSS
 ├── backend/             # FastAPI (to be added)
+├── gis/                 # Satellite + LiDAR data pipeline, QGIS project, web app prototype
 ├── docker-compose.yml   # PostgreSQL + PostGIS
 └── README.md
 ```
@@ -101,6 +102,12 @@ Expected result: `POINT(28 44.2)`.
 
 - **`port is already allocated`:** another service is using the port. Change the left side of the port mapping in `docker-compose.yml` (for example `"5434:5432"`) and update the connection string accordingly.
 - **Docker command not found or engine not running:** start Docker Desktop and wait until it reports the engine is running.
+
+## GIS data pipeline (`gis/`)
+
+The satellite and LiDAR processing behind the spots: PlanetScope water depth calibrated with ICESat-2, Sentinel-2 monthly statistics, LiDAR cliff analysis, orthophoto rock detection, wave exposure and swim routes. For the Mallorca test area it already produces 133 rated jump spots (`gis/outputs/spots/cliff_spots.gpkg`) and a static web app prototype with a 3D diorama per spot (`gis/outputs/webapp`).
+
+Details, data sources and how to run it: [`gis/README.md`](gis/README.md).
 
 ## Roadmap
 
