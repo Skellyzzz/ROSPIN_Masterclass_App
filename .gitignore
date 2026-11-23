@@ -1,0 +1,31 @@
+# --- mediul Python local si fisiere de lucru
+.venv-icesat2/
+__pycache__/
+*.pyc
+.claude/
+*.qgz~
+*.qgs~
+*.aux.xml
+
+# --- imagini Planet: licenta Education & Research NU permite publicarea lor
+#     (doar privat, pentru echipa; vezi README -> Data)
+Mallorca_Coast_psscene_analytic_8b_sr_udm2/
+*psscene*
+# produse care pastreaza valorile pixelilor Planet (reflectante corectate, masti, indici pe pixel)
+outputs/water/
+
+# --- date mari: in arhiva din GitHub Release (vezi README -> Getting the data)
+*.laz
+outputs/lidar/
+outputs/ortho/
+outputs/seabed/
+outputs/s2/*
+!outputs/s2/*.json
+outputs/icesat2/*.parquet
+
+# --- fisiere locale care nu tin de proiect
+*.mp4
+*.pdf
+qgis_mcp_plugin-*.zip
+catalonia_top_spots.geojson
+release/

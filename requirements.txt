@@ -1,0 +1,13 @@
+# Mediul Python pentru scripturile care ruleaza in afara QGIS
+# (fetch_icesat2_atl24.py, s2_timeseries.py, export_tiles.py). Testat cu Python 3.12.
+#   py -3.12 -m venv .venv-icesat2
+#   .venv-icesat2/Scripts/python -m pip install -r requirements.txt
+sliderule==5.8.1
+geopandas==1.2.0
+pyogrio==0.13.0
+shapely==2.2.0
+rasterio==1.5.2
+laspy[lazrs]==2.5.4
+scipy==1.14.1
+numpy==2.2.6
+pillow==11.0.0
