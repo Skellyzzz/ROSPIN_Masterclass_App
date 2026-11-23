@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dive Spot Finder</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="spots.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1d2430; --muted: #5d6878; --line: #e2e6ec;
+    --green: #1a9850; --amber: #e08a1e; --red: #d73027; --blue: #2166ac; --accent: #0b6e99;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #12161c; --panel: #1b2129; --text: #e6eaf0; --muted: #9aa6b5; --line: #2c3541; }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  #app { display: grid; grid-template-columns: 340px 1fr; height: 100%; }
+  #side { background: var(--panel); border-right: 1px solid var(--line); overflow: auto; padding: 16px; }
+  #map { height: 100%; }
+  h1 { font-size: 18px; margin: 0 0 2px; }
+  .sub { color: var(--muted); font-size: 12px; margin-bottom: 14px; }
+  .warn { background: color-mix(in srgb, var(--red) 10%, transparent); border: 1px solid color-mix(in srgb, var(--red) 35%, transparent);
+    border-radius: 8px; padding: 8px 10px; font-size: 12px; margin-bottom: 14px; }
+  fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px 10px; margin: 0 0 12px; }
+  legend { font-weight: 600; font-size: 12px; color: var(--muted); padding: 0 4px; }
+  label { display: flex; align-items: center; gap: 6px; margin: 3px 0; cursor: pointer; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: none; }
+  select, input[type=range] { width: 100%; }
+  .seg { display: flex; gap: 4px; }
+  .seg button { flex: 1; padding: 6px 4px; border: 1px solid var(--line); background: transparent; color: var(--text);
+    border-radius: 6px; cursor: pointer; font-size: 12px; }
+  .seg button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  #fc-status { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  #list { margin-top: 6px; }
+  .item { padding: 8px; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 6px; cursor: pointer; }
+  .item:hover { border-color: var(--accent); }
+  .item .t { font-weight: 600; display: flex; justify-content: space-between; gap: 6px; }
+  .item .m { color: var(--muted); font-size: 12px; }
+  .badge { font-size: 11px; padding: 1px 7px; border-radius: 10px; color: #fff; white-space: nowrap; }
+  .leaflet-popup-content { margin: 12px 14px; font-size: 13px; min-width: 260px; }
+  .pp h3 { margin: 0 0 4px; font-size: 15px; }
+  .pp table { border-collapse: collapse; width: 100%; margin: 6px 0; }
+  .pp td { padding: 2px 0; vertical-align: top; }
+  .pp td:first-child { color: #5d6878; width: 46%; padding-right: 6px; }
+  .pp ul { margin: 4px 0 6px 16px; padding: 0; }
+  .months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin: 4px 0; }
+  .months span { text-align: center; font-size: 10px; padding: 2px 0; border-radius: 3px; background: #e2e6ec; color: #333; }
+  .months span.good { background: #1a9850; color: #fff; }
+  .small { font-size: 11px; color: #5d6878; }
+  /* ---------- telefon: harta pe tot ecranul, filtrele si lista intr-un panou care urca de jos */
+  #fab { display: none; }
+  @media (max-width: 760px) {
+    #app { display: block; height: 100%; }
+    #map { position: fixed; inset: 0; }
+    #side { position: fixed; left: 0; right: 0; bottom: 0; height: 72vh; z-index: 1200; border: none;
+      border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.25); transform: translateY(100%);
+      transition: transform .28s ease; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+    #side.open { transform: none; }
+    #fab { display: block; position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom));
+      z-index: 1100; border: none; border-radius: 22px; padding: 11px 18px; font: 600 14px system-ui, sans-serif;
+      background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.3); white-space: nowrap; }
+    .item { padding: 11px 10px; }
+  }
+
+  /* ---------- vizualizarea 3D a unui punct */
+  #v3d { position: fixed; inset: 0; z-index: 2000; display: none;
+    background: radial-gradient(ellipse at 50% 38%, #3a4652 0%, #1b222b 55%, #0d1116 100%); }
+  #v3d.on { display: block; }
+  /* trecere prin negru intre harta si macheta */
+  #fade { position: fixed; inset: 0; z-index: 3000; background: #000; opacity: 0; pointer-events: none;
+    transition: opacity .35s ease; display: flex; align-items: center; justify-content: center; }
+  #fade.on { opacity: 1; pointer-events: auto; }
+  #fadeMsg { color: #cfd6de; font: 600 14px system-ui, sans-serif; letter-spacing: .02em; }
+  #c3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  #v3d .top { position: absolute; top: calc(10px + env(safe-area-inset-top)); left: 10px; right: 10px; display: flex;
+    justify-content: space-between; gap: 8px; z-index: 3; pointer-events: none; }
+  #v3d .top button { pointer-events: auto; border: none; border-radius: 20px; padding: 9px 14px; font: 600 14px system-ui, sans-serif;
+    background: rgba(18,22,28,.72); color: #fff; backdrop-filter: blur(6px); }
+  #labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
+  .lbl { position: absolute; left: 0; top: 0; white-space: nowrap; font: 500 11.5px/1.3 system-ui, sans-serif;
+    color: #fff; background: rgba(18,22,28,.78); padding: 4px 9px; border-radius: 9px; opacity: 0; transition: opacity .3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+  .lbl b { font-weight: 700; }
+  .lbl small { font-size: 10.5px; opacity: .85; }
+  #leaders { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  #leaders line { stroke: rgba(255,255,255,.85); stroke-width: 1.4; }
+  #leaders circle { fill: #fff; stroke: rgba(0,0,0,.45); stroke-width: 1; }
+  .lbl.show { opacity: 1; }
+  .lbl.jump { background: rgba(230,110,20,.92); }
+  .lbl.swim { background: rgba(0,140,160,.92); }
+  #loading3d { position: absolute; left: 50%; top: 40%; transform: translate(-50%,-50%); z-index: 3; color: #123;
+    font: 600 14px system-ui, sans-serif; background: rgba(255,255,255,.88); padding: 10px 16px; border-radius: 12px; display: none; }
+  #sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; background: var(--panel); color: var(--text);
+    border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.28); max-height: 70vh; display: flex; flex-direction: column;
+    transform: translateY(calc(100% - var(--peek, 120px))); transition: transform .3s ease;
+    padding-bottom: env(safe-area-inset-bottom); }
+  #sheet.open { transform: none; }
+  #sheet .handle { padding: 8px 14px 8px; cursor: pointer; flex: none; }
+  #sheet .grip { width: 38px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 8px; }
+  #sheet .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+  #sheet .stats div { background: var(--bg); border-radius: 8px; padding: 5px 4px; text-align: center; font-size: 11px; color: var(--muted); }
+  #sheet .stats b { display: block; font-size: 15px; color: var(--text); }
+  #sheet .body { overflow: auto; padding: 0 14px 14px; }
+  #sheet .pp td:first-child { color: var(--muted); }
+  @media (min-width: 761px) {
+    #sheet { left: auto; right: 14px; bottom: 14px; top: 64px; width: 380px; max-height: none; border-radius: 14px; transform: none; }
+    #sheet .grip { display: none; }
+  }
+</style>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+               "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="app">
+  <aside id="side">
+    <h1>Dive Spot Finder</h1>
+    <div class="sub">Prototip – zona de test Mallorca (est). Date: LiDAR PNOA 2024, PlanetScope, ICESat-2, ortofoto PNOA 25 cm, harta bionomica GOIB, Sentinel-2, Open-Meteo, OpenStreetMap.</div>
+    <div class="warn"><b>Pre-selectie, nu garantie.</b> Adancimea vine din satelit (eroare ~1–3 m), iar bolovanii din apa adanca nu se vad. Verifica intotdeauna adancimea la fata locului si nu sari singur.</div>
+
+    <fieldset><legend>Conditii (prognoza valuri live)</legend>
+      <div class="seg" id="days"><button data-d="0" class="on">Azi</button><button data-d="1">Maine</button><button data-d="2">Poimaine</button></div>
+      <label style="margin-top:8px"><input type="checkbox" id="fcmode"> Coloreaza dupa conditiile zilei</label>
+      <div id="fc-status">Se incarca prognoza…</div>
+    </fieldset>
+
+    <fieldset><legend>Siguranta (statica)</legend>
+      <label><input type="checkbox" class="fs" value="1" checked><span class="dot" style="background:var(--green)"></span>Promitator</label>
+      <label><input type="checkbox" class="fs" value="2" checked><span class="dot" style="background:var(--amber)"></span>Atentie – verifica</label>
+      <label><input type="checkbox" class="fs" value="3"><span class="dot" style="background:var(--red)"></span>Nesigur</label>
+    </fieldset>
+
+    <fieldset><legend>Dificultate</legend>
+      <select id="fdiff">
+        <option value="0">Toate</option><option value="1">Incepator</option><option value="2">Intermediar</option>
+        <option value="3">Avansat</option><option value="4">Expert</option><option value="5">Extrem</option>
+      </select>
+      <div style="margin-top:8px">Inaltime minima: <b id="hval">3</b> m</div>
+      <input type="range" id="fh" min="3" max="24" step="1" value="3">
+    </fieldset>
+
+    <div class="sub" id="count"></div>
+    <div id="list"></div>
+  </aside>
+  <div id="map"></div>
+</div>
+<button id="fab">☰ Filtre si lista</button>
+
+<div id="fade"><span id="fadeMsg"></span></div>
+<div id="v3d" aria-hidden="true">
+  <canvas id="c3d"></canvas>
+  <div id="labels"></div>
+  <div class="top"><button id="back3d">← Harta</button><span style="display:flex;gap:6px"><button id="mode3d">⁘ Nor de puncte</button><button id="replay3d">↻</button></span></div>
+  <div id="loading3d">Se incarca norul de puncte…</div>
+  <div id="sheet"><div class="handle" id="sheetHandle"><div class="grip"></div><div id="sheetHead"></div></div>
+    <div class="body" id="sheetBody"></div></div>
+</div>
+
+<script>
+const C = { 1: "#1a9850", 2: "#e08a1e", 3: "#d73027" };
+const FC = { calm: "#1a9850", moderat: "#e08a1e", agitat: "#d73027", nd: "#8a94a3" };
+const MONTHS = ["I","F","M","A","M","I","I","A","S","O","N","D"];
+const map = L.map("map", { zoomControl: true }).setView([39.497, 3.302], 16);
+const pnoa = L.tileLayer.wms("https://www.ign.es/wms-inspire/pnoa-ma", {
+  layers: "OI.OrthoimageCoverage", format: "image/jpeg", maxZoom: 21, attribution: "Ortofoto PNOA © IGN"
+});
+const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  { maxZoom: 19, attribution: "Imagery © Esri, Maxar, Earthstar Geographics" }).addTo(map);   // implicit
+const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  { maxZoom: 19, attribution: "© OpenStreetMap" });
+L.control.layers({ "Esri satelit": esri, "Ortofoto PNOA 25 cm": pnoa, "OpenStreetMap": osm }).addTo(map);
+
+let day = 0, fcMode = false, forecast = null;
+const layer = L.layerGroup().addTo(map);
+const lines = L.layerGroup().addTo(map);
+const swimLayer = L.layerGroup().addTo(map);   // traseul de inot al punctului selectat
+
+function showSwim(p) {
+  swimLayer.clearLayers();
+  if (!p.swim || p.swim.length < 2) return;
+  const ll = p.swim.map(c => [c[1], c[0]]);
+  L.polyline(ll, { color: "#003a40", weight: 6, opacity: 0.6 }).addTo(swimLayer);
+  L.polyline(ll, { color: "#00e5ff", weight: 3, dashArray: "6 5" }).addTo(swimLayer)
+    .bindTooltip(`inot ~${p.exit_dist_m} m pana la iesire`, { sticky: true });
+  L.circleMarker(ll[ll.length - 1], { radius: 6, color: "#003a40", weight: 2, fillColor: "#00e5ff", fillOpacity: 1 })
+    .bindTooltip(`Iesire: ${esc(p.exit_type)}`, { direction: "top" }).addTo(swimLayer);
+}
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+// valul efectiv la punct: Hs * cos(dir_val - orientare), doar din directii deschise spre larg
+function effWave(p, hs, dir) {
+  if (hs == null || dir == null || !p.open_mask) return null;
+  const idx = Math.round(dir / 5) % 72;
+  if (p.open_mask[idx] !== "1") return 0;
+  let d = ((dir - p.facing_deg + 540) % 360) - 180;
+  if (Math.abs(d) >= 90) return 0;
+  return hs * Math.cos(d * Math.PI / 180);
+}
+function dayCond(p) {
+  if (!forecast) return null;
+  const h = forecast.hourly, out = [];
+  for (let i = 0; i < h.time.length; i++) {
+    const t = h.time[i], dd = Math.floor(i / 24), hr = +t.slice(11, 13);
+    if (dd !== day || hr < 9 || hr > 19) continue;
+    out.push(effWave(p, h.wave_height[i], h.wave_direction[i]));
+  }
+  const v = out.filter(x => x != null);
+  if (!v.length) return { cls: "nd", max: null };
+  const mx = Math.max(...v);
+  return { cls: mx < 0.5 ? "calm" : mx < 1.0 ? "moderat" : "agitat", max: mx };
+}
+const CTXT = { calm: "calm (< 0.5 m la punct)", moderat: "valuri 0.5–1 m – doar experimentati", agitat: "valuri > 1 m – NU sari", nd: "fara date" };
+
+function popup(p) {
+  const reasons = (p.issues && p.issues !== "-") ? p.issues.split("; ").map(r => `<li>${esc(r)}</li>`).join("") : "<li>nicio problema detectata</li>";
+  const cond = dayCond(p);
+  const best = new Set(p.best_months || []);
+  const R = (META.best_rule || {});
+  const tip = i => { const v = (p.months || {})[i + 1] || {}; const a = [];
+    if (v.calm != null) a.push(`${v.calm}% zile calme`);
+    if (v.sst != null) a.push(`apa ${v.sst} °C`);
+    if (v.foam != null) a.push(`spuma in ${v.foam}% din imagini`);
+    return a.join(", "); };
+  const months = p.months ? `<div class="small">Luni bune (valuri calme in ≥${R.calm_min_pct || 80}% din zile, apa ≥${R.sst_min_c || 21} °C, putina spuma pe Sentinel-2) – tine mouse-ul pe luna pentru detalii</div><div class="months">${MONTHS.map((m, i) => `<span class="${best.has(i + 1) ? "good" : ""}" title="${esc(tip(i))}">${m}</span>`).join("")}</div>` : "";
+  return `<div class="pp">
+    <h3>Punct #${p.id} – ${p.height_m} m</h3>
+    <span class="badge" style="background:${C[p.safety]}">${esc(p.safety_txt)}</span>
+    <span class="badge" style="background:#2166ac">${esc(p.difficulty_txt)}</span>
+    ${cond ? `<span class="badge" style="background:${FC[cond.cls]}">${["Azi", "Maine", "Poimaine"][day]}: ${esc(CTXT[cond.cls])}</span>` : ""}
+    <ul>${reasons}</ul>
+    <table>
+      <tr><td>Inaltime / apa la</td><td>${p.height_m} m / ${p.clearance_m} m pe orizontala</td></tr>
+      <tr><td>Adancime (conservator)</td><td>${p.depth_est_m ?? "?"} m (necesar ${p.min_depth_req_m} m)</td></tr>
+      <tr><td>Fund (satelit / harta)</td><td>${esc(p.bottom_txt)} · ${esc(p.seabed_txt)}</td></tr>
+      <tr><td>Loc de elan</td><td>${p.run_up_m} m${p.crevasse_behind ? " · crapatura in spate" : ""}</td></tr>
+      <tr><td>Iesire din apa</td><td>${p.exit_dist_m != null ? `~${p.exit_dist_m} m de inot (traseul albastru) pana la ${esc(p.exit_type)}` : esc(p.exit_type || "necunoscut")}</td></tr>
+      <tr><td>Expunere valuri</td><td>${esc(p.exposure_txt)} (deschis ${esc(p.open_sector)})</td></tr>
+      <tr><td>Acces</td><td>${esc(p.access_txt)}</td></tr>
+    </table>${months}
+    <div class="small">Verifica adancimea la fata locului inainte de orice saritura.</div></div>`;
+}
+
+// ---------------------------------------------------------------- selectarea unui punct
+function openSpot(p) {
+  const f = SPOTS.features.find(x => x.properties.id === p.id);
+  const [lon, lat] = f.geometry.coordinates;
+  showSwim(p);
+  if (!window.open3D || window.NO3D) {           // fara WebGL: fisa clasica pe harta
+    map.setView([lat, lon], 18);
+    L.popup({ maxWidth: 340 }).setLatLng([lat, lon]).setContent(popup(p)).openOn(map);
+    return;
+  }
+  window.prefetch3D(p);                          // descarcarea incepe in timpul zborului pe harta
+  map.flyTo([lat, lon], 18, { duration: 0.75 });
+  setTimeout(() => window.dip(true).then(() => window.open3D(p)), 420);   // trecere prin negru spre macheta
+}
+function sheetHtml(p) {
+  const cond = dayCond(p);
+  return {
+    head: `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <b style="font-size:16px">#${p.id} · ${p.height_m} m</b>
+        <span><span class="badge" style="background:${C[p.safety]}">${esc(p.safety_txt)}</span>
+        <span class="badge" style="background:#2166ac">${esc(p.difficulty_txt)}</span></span></div>
+      <div class="stats"><div><b>${p.height_m} m</b>inaltime</div><div><b>${p.depth_est_m ?? "?"} m</b>adancime</div>
+        <div><b>${p.exit_dist_m ?? "?"} m</b>inot</div>
+        <div><b style="color:${cond ? FC[cond.cls] : "inherit"}">${cond && cond.max != null ? cond.max.toFixed(1) + " m" : "–"}</b>val ${["azi", "maine", "poimaine"][day]}</div></div>`,
+    body: popup(p)
+  };
+}
+window.sheetHtml = sheetHtml;
+
+function passes(p) {
+  const fs = [...document.querySelectorAll(".fs:checked")].map(x => +x.value);
+  const fd = +document.getElementById("fdiff").value;
+  const fh = +document.getElementById("fh").value;
+  return fs.includes(p.safety) && (!fd || p.difficulty === fd) && p.height_m >= fh;
+}
+
+function render() {
+  layer.clearLayers(); lines.clearLayers();
+  const list = document.getElementById("list"); list.innerHTML = "";
+  const feats = SPOTS.features.filter(f => passes(f.properties))
+    .sort((a, b) => a.properties.safety - b.properties.safety || b.properties.height_m - a.properties.height_m);
+  document.getElementById("count").textContent = `${feats.length} din ${SPOTS.features.length} puncte`;
+  document.getElementById("fab").textContent = `☰ Filtre si lista · ${feats.length} puncte`;
+  for (const f of feats) {
+    const p = f.properties, [lon, lat] = f.geometry.coordinates;
+    const cond = dayCond(p);
+    const color = fcMode && cond ? FC[cond.cls] : C[p.safety];
+    L.polyline([[lat, lon], [p.landing[1], p.landing[0]]], { color: "#fff", weight: 1.5, dashArray: "3 3", opacity: 0.9 }).addTo(lines);
+    const m = L.circleMarker([lat, lon], { radius: 9, color: "#fff", weight: 2, fillColor: color, fillOpacity: 1 })
+      .bindTooltip(`${p.height_m} m`, { direction: "top" });
+    m.on("click", () => openSpot(p));
+    m.addTo(layer);
+    const it = document.createElement("div");
+    it.className = "item";
+    it.innerHTML = `<div class="t"><span>#${p.id} · ${p.height_m} m · ${esc(p.difficulty_txt)}</span>
+      <span class="badge" style="background:${color}">${fcMode && cond ? esc(cond.cls) : esc(p.safety_txt)}</span></div>
+      <div class="m">${esc(p.seabed_txt)} · adanc. ${p.depth_est_m ?? "?"} m · ${esc(p.exposure_txt)}</div>`;
+    it.onclick = () => { document.getElementById("side").classList.remove("open"); openSpot(p); };
+    list.appendChild(it);
+  }
+}
+
+document.getElementById("fab").addEventListener("click", () => document.getElementById("side").classList.toggle("open"));
+map.on("click", () => document.getElementById("side").classList.remove("open"));
+document.querySelectorAll(".fs, #fdiff").forEach(el => el.addEventListener("change", render));
+document.getElementById("fh").addEventListener("input", e => { document.getElementById("hval").textContent = e.target.value; render(); });
+document.getElementById("fcmode").addEventListener("change", e => { fcMode = e.target.checked; render(); });
+document.querySelectorAll("#days button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#days button").forEach(x => x.classList.remove("on"));
+  b.classList.add("on"); day = +b.dataset.d; render(); summarizeForecast();
+}));
+
+function summarizeForecast() {
+  if (!forecast) return;
+  const h = forecast.hourly; let mx = 0, dir = 0;
+  for (let i = day * 24 + 9; i <= day * 24 + 19 && i < h.time.length; i++) if (h.wave_height[i] > mx) { mx = h.wave_height[i]; dir = h.wave_direction[i]; }
+  const n = SPOTS.features.map(f => dayCond(f.properties)).filter(c => c && c.cls === "calm").length;
+  document.getElementById("fc-status").textContent =
+    `Larg: val max ${mx.toFixed(1)} m din ${Math.round(dir)}° (09–19h). ${n} puncte calme. Sursa: Open-Meteo Marine.`;
+}
+
+const wp = (window.META && META.wave_point) || { lat: 39.497, lon: 3.335 };
+fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${wp.lat}&longitude=${wp.lon}&hourly=wave_height,wave_direction,wave_period&forecast_days=3&timezone=Europe%2FMadrid`)
+  .then(r => r.json()).then(js => { forecast = js; summarizeForecast(); render(); })
+  .catch(() => { document.getElementById("fc-status").textContent = "Prognoza indisponibila (fara internet?)."; });
+
+render();
+const b = L.latLngBounds(SPOTS.features.map(f => [f.geometry.coordinates[1], f.geometry.coordinates[0]]));
+map.fitBounds(b, { padding: [20, 20] });
+</script>
+<script type="module" src="viewer3d.js"></script>
+</body>
+</html>

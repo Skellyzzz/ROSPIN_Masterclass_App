@@ -1,0 +1,20 @@
+{
+  "rejected_not_cliff": 5,
+  "spots": 133,
+  "by_safety": {
+    "Promitator": 8,
+    "Atentie - verifica": 48,
+    "Nesigur": 77
+  },
+  "by_difficulty": {
+    "Incepator": 25,
+    "Intermediar": 54,
+    "Avansat": 27,
+    "Expert": 8,
+    "Extrem": 19
+  },
+  "height_range": [
+    3.0,
+    23.1
+  ]
+}

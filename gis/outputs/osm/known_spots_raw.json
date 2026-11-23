@@ -1,0 +1,572 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-22T22:04:21Z",
+    "timestamp_areas_base": "2026-11-22T16:12:05Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 299664524,
+  "lat": 39.5114478,
+  "lon": 2.4663547,
+  "tags": {
+    "addr:housenumber": "46",
+    "addr:postcode": "07180",
+    "addr:street": "via de la Creu",
+    "amenity": "dive_centre",
+    "contact:facebook": "zoeamallorca",
+    "contact:instagram": "zoeamallorca",
+    "email": "reservas@zoeamallorca.com",
+    "name": "Zoea",
+    "phone": "+34 971691444",
+    "shop": "yes",
+    "sport": "scuba_diving",
+    "website": "https://zoeamallorca.com"
+  }
+},
+{
+  "type": "node",
+  "id": 319106447,
+  "lat": 39.8039463,
+  "lon": 2.8967546,
+  "tags": {
+    "name": "Mirador des salt de la Bella Dona",
+    "tourism": "viewpoint"
+  }
+},
+{
+  "type": "node",
+  "id": 494221434,
+  "lat": 39.6833328,
+  "lon": 3.4515396,
+  "tags": {
+    "amenity": "dive_centre",
+    "check_date": "2024-04-14",
+    "email": "info@mallorcadiving.de",
+    "name": "Dive & Fun Font de Sa Cala",
+    "phone": "+34971818036",
+    "sport": "scuba_diving",
+    "website": "http://www.mallorcadiving.de/"
+  }
+},
+{
+  "type": "node",
+  "id": 494223352,
+  "lat": 39.6861117,
+  "lon": 3.4506203,
+  "tags": {
+    "email": "info@mallorcadiving.de",
+    "name": "Dive & Fun Font de sa Cala",
+    "opening_hours": "Apr-Oct 09:00-18:00",
+    "phone": "+34 971 818 036",
+    "shop": "scuba_diving",
+    "sport": "scuba_diving",
+    "website": "https://www.mallorcadiving.de"
+  }
+},
+{
+  "type": "node",
+  "id": 924204991,
+  "lat": 39.8417625,
+  "lon": 2.8263644,
+  "tags": {
+    "name": "Salt des Soldat Pelut",
+    "name:ca": "Salt des Soldat Pelut",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 1242610580,
+  "lat": 39.8369718,
+  "lon": 2.8000330,
+  "tags": {
+    "name": "Salt de s'Aigo",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 1242638304,
+  "lat": 39.8511342,
+  "lon": 2.9501660,
+  "tags": {
+    "name": "Salt del Molinet",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 1629430886,
+  "lat": 39.7607986,
+  "lon": 2.7558333,
+  "tags": {
+    "name": "salt des Cans",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 1629849270,
+  "lat": 39.8031569,
+  "lon": 2.7221105,
+  "tags": {
+    "name": "salt de Bàlitx",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 2819548985,
+  "lat": 39.7238430,
+  "lon": 2.7470450,
+  "tags": {
+    "name": "Es Salt des Freu",
+    "tourism": "attraction",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 3772201700,
+  "lat": 39.3813613,
+  "lon": 3.2426685,
+  "tags": {
+    "amenity": "dive_centre",
+    "name": "Dive Center Mallorca",
+    "sport": "scuba_diving",
+    "website": "https://www.tauchschule-mallorca.de/"
+  }
+},
+{
+  "type": "node",
+  "id": 4043299574,
+  "lat": 39.8721153,
+  "lon": 2.9506819,
+  "tags": {
+    "name": "Salt de pedruxella gran",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 4604432517,
+  "lat": 39.8763181,
+  "lon": 2.9857218,
+  "tags": {
+    "name": "Salt de Llinars",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 8076853334,
+  "lat": 39.8702899,
+  "lon": 2.9455341,
+  "tags": {
+    "name": "salt de Pedruixella petit",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 9919580721,
+  "lat": 39.6165419,
+  "lon": 2.4938442,
+  "tags": {
+    "name": "#3 Salt de l'Esclau",
+    "waterway": "waterfall"
+  }
+},
+{
+  "type": "node",
+  "id": 12749769075,
+  "lat": 39.8520897,
+  "lon": 2.9460613,
+  "tags": {
+    "ele": "320",
+    "name": "Salt del Molinet",
+    "name:ca": "Salt del Molinet",
+    "place": "locality",
+    "source": "IGN;gabpr05"
+  }
+},
+{
+  "type": "node",
+  "id": 12749809804,
+  "lat": 39.8043119,
+  "lon": 2.8997928,
+  "tags": {
+    "ele": "435",
+    "name": "Salt de la Bella Dona",
+    "name:ca": "Salt de la Bella Dona",
+    "place": "locality"
+  }
+},
+{
+  "type": "node",
+  "id": 13661587201,
+  "lat": 39.4475042,
+  "lon": 2.7431277,
+  "tags": {
+    "amenity": "public_bath",
+    "name": "Great beach with cliffs"
+  }
+},
+{
+  "type": "node",
+  "id": 14063469288,
+  "lat": 39.6040556,
+  "lon": 2.6557007,
+  "tags": {
+    "contact:email": "atencionalcliente@saltoki.es",
+    "contact:facebook": "https://www.facebook.com/Saltoki",
+    "contact:phone": "+34 971 43 34 44",
+    "contact:website": "https://www.massanellasa.com",
+    "name": "Saltoki",
+    "opening_hours": "Mo-Fr 07:00-18:00; Sa 08:00-13:00",
+    "shop": "doityourself"
+  }
+},
+{
+  "type": "way",
+  "id": 31829608,
+  "center": {
+    "lat": 39.7671158,
+    "lon": 3.0181717
+  },
+  "tags": {
+    "bicycle": "yes",
+    "highway": "residential",
+    "lane_markings": "no",
+    "lit": "yes",
+    "maxspeed": "30",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "oneway": "no",
+    "sidewalk": "both",
+    "sidewalk:both:surface": "paving_stones",
+    "smoothness": "excellent",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 32004325,
+  "center": {
+    "lat": 39.5685434,
+    "lon": 2.6312727
+  },
+  "tags": {
+    "handrail": "yes",
+    "highway": "steps",
+    "incline": "up",
+    "lit": "yes",
+    "name": "Carrer del Salt del Ca",
+    "name:ca": "Carrer del Salt del Ca",
+    "ramp": "no",
+    "surface": "paving_stones"
+  }
+},
+{
+  "type": "way",
+  "id": 153227168,
+  "center": {
+    "lat": 39.7698039,
+    "lon": 3.0229723
+  },
+  "tags": {
+    "highway": "living_street",
+    "lit": "yes",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "surface": "paving_stones"
+  }
+},
+{
+  "type": "way",
+  "id": 242585657,
+  "center": {
+    "lat": 39.7625310,
+    "lon": 2.7110580
+  },
+  "tags": {
+    "highway": "residential",
+    "name": "Placeta de Francesc Saltor",
+    "name:ca": "Placeta de Francesc Saltor",
+    "oneway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 271977716,
+  "center": {
+    "lat": 39.5831580,
+    "lon": 2.3492317
+  },
+  "tags": {
+    "addr:city": "San Telmo",
+    "addr:housenumber": "7",
+    "addr:postcode": "07159",
+    "addr:street": "Plaza Monsenor Sebastian Grau",
+    "amenity": "dive_centre",
+    "building": "yes",
+    "name": "Scuba Activa",
+    "phone": "+34 971 23 91 02",
+    "scuba_diving:air_filling": "yes",
+    "scuba_diving:courses": "yes",
+    "scuba_diving:education": "yes",
+    "scuba_diving:filling": "yes",
+    "scuba_diving:guided_tours": "yes",
+    "scuba_diving:organization": "PADI,CMAS",
+    "scuba_diving:rental": "yes",
+    "scuba_diving:spoken_languages": "en,de,nl",
+    "shop": "scuba_diving",
+    "sport": "scuba_diving",
+    "website": "https://www.scuba-activa.com/"
+  }
+},
+{
+  "type": "way",
+  "id": 279395971,
+  "center": {
+    "lat": 39.7687143,
+    "lon": 3.0210412
+  },
+  "tags": {
+    "bicycle": "yes",
+    "highway": "residential",
+    "lane_markings": "no",
+    "lit": "yes",
+    "maxspeed": "30",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+},
+{
+  "type": "way",
+  "id": 346968961,
+  "center": {
+    "lat": 39.8546973,
+    "lon": 2.9603317
+  },
+  "tags": {
+    "name": "salt des Raconàs",
+    "natural": "cliff"
+  }
+},
+{
+  "type": "way",
+  "id": 375802198,
+  "center": {
+    "lat": 39.7440213,
+    "lon": 3.4295132
+  },
+  "tags": {
+    "leisure": "pitch",
+    "name": "Trampoline"
+  }
+},
+{
+  "type": "way",
+  "id": 464791023,
+  "center": {
+    "lat": 39.8719112,
+    "lon": 2.9860026
+  },
+  "tags": {
+    "intermittent": "yes",
+    "name": "Torrent del Salt de Llinars",
+    "name:ca": "Torrent del Salt de Llinars",
+    "waterway": "stream"
+  }
+},
+{
+  "type": "way",
+  "id": 465488564,
+  "center": {
+    "lat": 39.8762880,
+    "lon": 2.9845376
+  },
+  "tags": {
+    "intermittent": "yes",
+    "name": "Torrent del Salt de Llinars",
+    "name:ca": "Torrent del Salt de Llinars",
+    "waterway": "stream"
+  }
+},
+{
+  "type": "way",
+  "id": 465488565,
+  "center": {
+    "lat": 39.8730813,
+    "lon": 2.9848689
+  },
+  "tags": {
+    "intermittent": "yes",
+    "name": "Torrent del Salt de Llinars",
+    "name:ca": "Torrent del Salt de Llinars",
+    "waterway": "stream"
+  }
+},
+{
+  "type": "way",
+  "id": 781289113,
+  "center": {
+    "lat": 39.5687854,
+    "lon": 2.6310633
+  },
+  "tags": {
+    "highway": "pedestrian",
+    "lit": "yes",
+    "name": "Carrer del Salt del Ca",
+    "name:ca": "Carrer del Salt del Ca"
+  }
+},
+{
+  "type": "way",
+  "id": 783231337,
+  "center": {
+    "lat": 39.7752404,
+    "lon": 2.8082247
+  },
+  "tags": {
+    "name": "salt des Cans",
+    "name:ca": "salt des Cans",
+    "natural": "cliff"
+  }
+},
+{
+  "type": "way",
+  "id": 1016388876,
+  "center": {
+    "lat": 39.8039447,
+    "lon": 2.8983958
+  },
+  "tags": {
+    "name": "salt de la Bella Dona",
+    "natural": "cliff"
+  }
+},
+{
+  "type": "way",
+  "id": 1016388877,
+  "center": {
+    "lat": 39.8035021,
+    "lon": 2.9007339
+  },
+  "tags": {
+    "name": "salt de la Bella Dona",
+    "natural": "cliff"
+  }
+},
+{
+  "type": "way",
+  "id": 1120631556,
+  "center": {
+    "lat": 39.5685601,
+    "lon": 2.6313135
+  },
+  "tags": {
+    "handrail": "yes",
+    "highway": "steps",
+    "incline": "down",
+    "lit": "yes",
+    "name": "Carrer del Salt del Ca",
+    "name:ca": "Carrer del Salt del Ca",
+    "ramp": "no",
+    "surface": "paving_stones"
+  }
+},
+{
+  "type": "way",
+  "id": 1232488452,
+  "center": {
+    "lat": 39.6595055,
+    "lon": 2.4969119
+  },
+  "tags": {
+    "building": "house",
+    "name": "es Salt des Putxet"
+  }
+},
+{
+  "type": "way",
+  "id": 1233302155,
+  "center": {
+    "lat": 39.6606307,
+    "lon": 2.4986545
+  },
+  "tags": {
+    "building": "ruins",
+    "name": "es Salt des Fonollar"
+  }
+},
+{
+  "type": "way",
+  "id": 1359305626,
+  "center": {
+    "lat": 39.7700658,
+    "lon": 3.0234399
+  },
+  "tags": {
+    "access": "no",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "pedestrian",
+    "horse": "unknown",
+    "lit": "yes",
+    "motor_vehicle": "permissive",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "surface": "paving_stones"
+  }
+},
+{
+  "type": "way",
+  "id": 1359305627,
+  "center": {
+    "lat": 39.7702670,
+    "lon": 3.0238141
+  },
+  "tags": {
+    "access": "no",
+    "bicycle": "yes",
+    "foot": "yes",
+    "highway": "pedestrian",
+    "horse": "unknown",
+    "lit": "yes",
+    "motor_vehicle": "permissive",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "surface": "paving_stones"
+  }
+},
+{
+  "type": "way",
+  "id": 1375030492,
+  "center": {
+    "lat": 39.7694800,
+    "lon": 3.0223984
+  },
+  "tags": {
+    "bicycle": "yes",
+    "highway": "living_street",
+    "lane_markings": "no",
+    "lit": "yes",
+    "maxspeed": "30",
+    "name": "Carrer Asalto",
+    "name:ca": "Carrer Asalto",
+    "oneway": "yes",
+    "surface": "asphalt"
+  }
+}
+
+  ]
+}

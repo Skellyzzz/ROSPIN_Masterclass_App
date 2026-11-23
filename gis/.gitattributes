@@ -1,0 +1,12 @@
+# Formate binare: git nu are voie sa le schimbe capetele de linie
+*.h        binary
+*.p0       binary
+*.p1       binary
+*.jpg      binary
+*.png      binary
+*.tif      binary
+*.gpkg     binary
+*.qgz      binary
+*.parquet  binary
+*.laz      binary
+*.zip      binary
