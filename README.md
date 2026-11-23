@@ -86,7 +86,7 @@ PDAL algorithms in QGIS. Detailed notes on every product and method: [`outputs/R
 
 - **In this repository:** code, the QGIS project, the jump spots (`outputs/spots`), swim routes, waves, ICESat-2,
   OpenStreetMap and Sentinel-2 statistics, and the complete web app with its 3D tiles.
-- **GitHub Release (`CLAVADO-data-v1.zip`):** the two LiDAR `.laz` tiles and the larger rasters (LiDAR, orthophoto,
+- **[GitHub Release v1-data](https://github.com/gabiRoBt/CLAVADO/releases/tag/v1-data) (`CLAVADO-data-v1.zip`):** the two LiDAR `.laz` tiles and the larger rasters (LiDAR, orthophoto,
   seabed, Sentinel-2). Unzip it into the repository folder.
 - **Not included: PlanetScope imagery** and the products that keep its pixel values (`outputs/water`). The Planet
   Education & Research license does not allow publishing them. With your own Planet access, order PSScene
